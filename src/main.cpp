@@ -1,4 +1,7 @@
 #include "SDL.h"
+#include "sggl/3_0.h"
+
+#include <cstdarg>
 #include <cstdlib>
 #include <cstdio>
 
@@ -10,11 +13,24 @@ SDL_Window *g_window;
 SDL_GLContext g_context;
 
 __attribute__((noreturn))
-void sdl_error(const char *what)
-{
-    std::fprintf(stderr, "error: %s: %s\n", what, SDL_GetError());
+void diev(const char *msg, va_list ap) {
+    std::fputs("Error: ", stderr);
+    std::vfprintf(stderr, msg, ap);
+    std::fputc('\n', stderr);
     SDL_Quit();
     std::exit(1);
+}
+
+__attribute__((noreturn))
+void die(const char *msg, ...) {
+    va_list ap;
+    va_start(ap, msg);
+    diev(msg, ap);
+}
+
+__attribute__((noreturn))
+void die_sdl(const char *what) {
+    die("%s: %s", SDL_GetError());
 }
 
 void sdl_init() {
@@ -22,7 +38,7 @@ void sdl_init() {
 
     flags = SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS;
     if (SDL_Init(flags)) {
-        sdl_error("Could not initialize LibSDL");
+        die_sdl("Could not initialize LibSDL");
     }
 
     flags = (SDL_WINDOW_OPENGL |
@@ -36,7 +52,7 @@ void sdl_init() {
         HEIGHT,
         flags);
     if (!g_window) {
-        sdl_error("Could not open window.");
+        die_sdl("Could not open window");
     }
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -50,7 +66,7 @@ void sdl_init() {
 
     g_context = SDL_GL_CreateContext(g_window);
     if (!g_context) {
-        sdl_error("Could not create OpenGL context.");
+        die_sdl("Could not create OpenGL context");
     }
 }
 
@@ -72,6 +88,9 @@ bool sdl_handle_events() {
 
 int main(int argc, char *argv[]) {
     sdl_init();
+    if (sggl_init()) {
+        die("Could not load OpenGL functions");
+    }
     while (sdl_handle_events()) {
         int width, height;
         SDL_GL_GetDrawableSize(g_window, &width, &height);
