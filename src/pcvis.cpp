@@ -1,7 +1,7 @@
-#include "SDL.h"
+#include "defs.hpp"
 #include "sggl/3_0.h"
 
-#include <cstdarg>
+#include "SDL.h"
 #include <cstdlib>
 #include <cstdio>
 
@@ -11,22 +11,6 @@ const int WIDTH = 1280;
 const int HEIGHT = 720;
 SDL_Window *g_window;
 SDL_GLContext g_context;
-
-__attribute__((noreturn))
-void diev(const char *msg, va_list ap) {
-    std::fputs("Error: ", stderr);
-    std::vfprintf(stderr, msg, ap);
-    std::fputc('\n', stderr);
-    SDL_Quit();
-    std::exit(1);
-}
-
-__attribute__((noreturn))
-void die(const char *msg, ...) {
-    va_list ap;
-    va_start(ap, msg);
-    diev(msg, ap);
-}
 
 __attribute__((noreturn))
 void die_sdl(const char *what) {
