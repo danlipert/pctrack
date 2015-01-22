@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) {
         points.clear();
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                int d = depth[y*HEIGHT+x];
-                unsigned c = read_color(color + (y * HEIGHT + x) * 3);
+                int d = depth[y*WIDTH+x];
+                unsigned c = read_color(color + (y * WIDTH + x) * 3);
                 if (d >= 2047) {
                     continue;
                 }
