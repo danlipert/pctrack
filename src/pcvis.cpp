@@ -151,13 +151,20 @@ int main(int argc, char *argv[]) {
         }
 
         int point_count = 0;
+        double frame_time = 0.0;
         while (sdl_handle_events()) {
             int width, height;
             SDL_GL_GetDrawableSize(g_window, &width, &height);
 
-            if (point_count == 0) {
+            double new_time = SDL_GetTicks() * 0.001;
+            if (point_count == 0 || new_time - frame_time >= 1.0 / 30.0) {
                 int count = 0;
                 fp.read(reinterpret_cast<char *>(&count), sizeof(count));
+                if (fp.eof()) {
+                    fp.clear();
+                    fp.seekg(0, fp.beg);
+                    fp.read(reinterpret_cast<char *>(&count), sizeof(count));
+                }
                 if (fp.good() && count > 0) {
                     assert(count <= 640 * 480);
                     glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -179,6 +186,7 @@ int main(int argc, char *argv[]) {
                     glBindBuffer(GL_ARRAY_BUFFER, 0);
                     point_count = count;
                 }
+                frame_time = new_time;
             }
 
             glViewport(0, 0, width, height);
