@@ -9,6 +9,10 @@ using namespace gl_2_0;
 
 ////////////////////////////////////////////////////////////
 
+namespace {
+std::string g_shader_search_path("src/glsl/");
+};
+
 Shader::~Shader() {
     if (value) {
         glDeleteShader(value);
@@ -44,7 +48,10 @@ Shader Shader::load(const std::string &path, GLenum type) {
     if (!shader) {
         die("Could not create shader.");
     }
-    std::string fullpath("src/glsl/");
+    std::string fullpath(g_shader_search_path);
+    if (!fullpath.empty() && fullpath[fullpath.size() - 1] != '/') {
+        fullpath += '/';
+    }
     fullpath += path;
     fullpath += '.';
     fullpath += shader_file_extension(type);
@@ -75,6 +82,10 @@ Shader Shader::load(const std::string &path, GLenum type) {
     }
     shader.name = std::move(fullpath);
     return std::move(shader);
+}
+
+void Shader::set_search_path(const std::string &path) {
+    g_shader_search_path = path;
 }
 
 //////////////////////////////////////////////////////////////////////

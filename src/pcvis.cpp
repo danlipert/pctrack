@@ -8,10 +8,10 @@
 
 #include "SDL.h"
 #define GLM_FORCE_RADIANS 1
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/string_cast.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 namespace {
 
@@ -102,6 +102,9 @@ int main(int argc, char *argv[]) {
     using namespace gl_3_3;
     if (argc < 2) {
         die("Usage: pcvis FILE");
+    }
+    if (argc >= 3) {
+        Shader::set_search_path(argv[2]);
     }
 
     sdl_init();

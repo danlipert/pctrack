@@ -35,6 +35,8 @@ struct Shader {
     /// .vert extension).  This will return a zero shader if loading
     /// or compilation fails.  Errors will be logged to the console.
     static Shader load(const std::string &path, GLenum type);
+    /// Set the shader search path.
+    static void set_search_path(const std::string &path);
 };
 
 inline Shader::Shader() : value(0) {}

@@ -13,6 +13,8 @@
 		3804A30E1A6F036300804892 /* opengl_data.c in Sources */ = {isa = PBXBuildFile; fileRef = 3804A3091A6F034400804892 /* opengl_data.c */; };
 		3804A30F1A6F036600804892 /* opengl_load.c in Sources */ = {isa = PBXBuildFile; fileRef = 3804A30A1A6F034400804892 /* opengl_load.c */; };
 		3804A3131A6F045D00804892 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3804A3121A6F045D00804892 /* OpenGL.framework */; };
+		386FE5C51A71BA1F00124996 /* shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 386FE5C31A71BA1F00124996 /* shader.cpp */; };
+		386FE5C61A71BA1F00124996 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 386FE5C41A71BA1F00124996 /* util.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		3804A30A1A6F034400804892 /* opengl_load.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = opengl_load.c; sourceTree = "<group>"; };
 		3804A3101A6F03A500804892 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3804A3121A6F045D00804892 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		386FE5C31A71BA1F00124996 /* shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shader.cpp; sourceTree = "<group>"; };
+		386FE5C41A71BA1F00124996 /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = util.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 				3804A2F61A6F034400804892 /* defs.hpp */,
 				3804A2F71A6F034400804892 /* pckinect.cpp */,
 				3804A2F81A6F034400804892 /* pcvis.cpp */,
+				386FE5C31A71BA1F00124996 /* shader.cpp */,
+				386FE5C41A71BA1F00124996 /* util.cpp */,
 				3804A2F91A6F034400804892 /* sggl */,
 			);
 			path = src;
@@ -175,10 +181,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				386FE5C51A71BA1F00124996 /* shader.cpp in Sources */,
 				3804A30C1A6F035D00804892 /* common.cpp in Sources */,
 				3804A30D1A6F036000804892 /* pcvis.cpp in Sources */,
 				3804A30E1A6F036300804892 /* opengl_data.c in Sources */,
 				3804A30F1A6F036600804892 /* opengl_load.c in Sources */,
+				386FE5C61A71BA1F00124996 /* util.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +320,7 @@
 				3804A2EC1A6F024900804892 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
