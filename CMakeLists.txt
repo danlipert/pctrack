@@ -5,6 +5,8 @@ add_executable(
   pcvis
   src/common.cpp
   src/pcvis.cpp
+  src/shader.cpp
+  src/util.cpp
   src/sggl/opengl_data.c
   src/sggl/opengl_load.c
 )
