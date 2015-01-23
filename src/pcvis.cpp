@@ -207,10 +207,12 @@ int main(int argc, char *argv[]) {
                 glm::mat4 mvp =
                     glm::perspective(fovy, aspect, 0.1f, 30.0f) *
                     glm::translate(glm::mat4(1.0f),
-                                   glm::vec3(0.0f, 0.0f, -10.0f)) *
+                                   glm::vec3(0.0f, 0.0f, -3.0f)) *
                     glm::rotate(glm::mat4(1.0f),
                                 (float) SDL_GetTicks() * 0.001f,
-                                glm::vec3(0.0f, 1.0f, 0.0f));
+                                glm::vec3(0.0f, 1.0f, 0.0f)) *
+                    glm::translate(glm::mat4(1.0f),
+                                   glm::vec3(0.0f, 0.0f, -2.0f));
                 glUniformMatrix4fv(
                     prog->u_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
 

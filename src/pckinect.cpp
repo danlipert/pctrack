@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
             uint32_t ts;
             int r;
             r = freenect_sync_get_depth(
-                &p, &ts, 0, FREENECT_DEPTH_11BIT);
+                &p, &ts, 0, FREENECT_DEPTH_REGISTERED);
             if (r < 0) {
                 die("Could not get depth data.");
             }
@@ -76,18 +76,14 @@ int main(int argc, char *argv[]) {
             for (int x = 0; x < WIDTH; x++) {
                 int d = depth[y*WIDTH+x];
                 unsigned c = read_color(color + (y * WIDTH + x) * 3);
-                if (d >= 2047) {
+                if (!d) {
                     continue;
                 }
-                float z = 0.1236f * std::tan(
-                    static_cast<float>(d) * (1.0f / 2842.5f) + 1.1863f);
-                float minDistance = -10.0f;
+                float z = 0.001f * d;
                 float scaleFactor = 0.0021f;
                 points.push_back(Point{
-                    { static_cast<float>(x - WIDTH / 2) *
-                      (z + minDistance) * scaleFactor,
-                      static_cast<float>(y - HEIGHT / 2) *
-                      (z + minDistance) * scaleFactor,
+                    { static_cast<float>(WIDTH  / 2 - x) * (z * scaleFactor),
+                      static_cast<float>(HEIGHT / 2 - y) * (z * scaleFactor),
                       z },
                     c
                 });
