@@ -74,18 +74,30 @@ int main(int argc, char *argv[]) {
     std::fputs("Creating depth key.\n", stderr);
     std::vector<unsigned short> depth_key(WIDTH * HEIGHT);
     {
-        const unsigned short *depth = get_depth();
+        const unsigned short *depth;
+        while (true) {
+            depth = get_depth();
 
-        // Fill holes by taking maximum nearby value
-        std::fputs("    Filling holes.\n", stderr);
-        int holes = 0;
+            // Fill holes by erosion.  Erosion is always at least 1.
+            int holes = 0;
+            for (int i = 0; i < WIDTH * HEIGHT; i++) {
+                holes += depth[i] == 0;
+            }
+            double frac = (double) holes * (1.0 / (WIDTH * HEIGHT));
+            std::fprintf(stderr, "    Filling %d pixels (%.1f%%).\n",
+                         holes, frac * 100.0);
+            if (frac > 0.25) {
+                std::fprintf(stderr, "    Trying another frame...\n");
+            } else {
+                break;
+            }
+        }
+
+        int unfilled = 0;
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                unsigned short d = depth[y * WIDTH + x];
-                if (!d) {
-                    d = 0xffff;
-                }
-                for (int r = 1; d == 0xffff && r < 64; r++) {
+                unsigned short d = 0xffff;
+                for (int r = 1; r < 64; r++) {
                     int y0 = std::max(y - r, 0);
                     int y1 = std::min(y + r + 1, HEIGHT);
                     int x0 = std::max(x - r, 0);
@@ -100,15 +112,18 @@ int main(int argc, char *argv[]) {
                             }
                         }
                     }
+                    if (d != 0xffff) {
+                        break;
+                    }
                 }
                 if (d == 0xffff) {
                     d = 0;
-                    holes++;
+                    unfilled++;
                 }
                 depth_key[y * WIDTH + x] = d;
             }
         }
-        std::fprintf(stderr, "   Could not fill %d pixels.\n", holes);
+        std::fprintf(stderr, "   Could not fill %d pixels.\n", unfilled);
     }
 
     std::fputs("Sleeping 2 seconds.\n", stderr);
