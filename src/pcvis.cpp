@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
                 const auto &prog = prog_points;
                 glUseProgram(prog.prog());
                 glBindVertexArray(arr);
-                // glEnable(GL_DEPTH_TEST);
+                glEnable(GL_DEPTH_TEST);
 
                 float aspect = (float) width / (float) height;
                 float fovy = std::atan(1.0f); // 45 degrees
@@ -208,14 +208,17 @@ int main(int argc, char *argv[]) {
                     glm::perspective(fovy, aspect, 0.1f, 30.0f) *
                     glm::translate(glm::mat4(1.0f),
                                    glm::vec3(0.0f, 0.0f, -3.0f)) *
-                    glm::rotate(glm::mat4(1.0f),
-                                (float) SDL_GetTicks() * 0.001f,
-                                glm::vec3(0.0f, 1.0f, 0.0f)) *
+                    glm::rotate(
+                        glm::mat4(1.0f),
+                        0.5f * std::sin((float) SDL_GetTicks() * 0.001f) +
+                        std::atan(1.0f) * 4.0f,
+                        glm::vec3(0.0f, 1.0f, 0.0f)) *
                     glm::translate(glm::mat4(1.0f),
                                    glm::vec3(0.0f, 0.0f, -2.0f));
                 glUniformMatrix4fv(
                     prog->u_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
 
+                glPointSize(3.0f);
                 glDrawArrays(GL_POINTS, 0, point_count);
             }
 
