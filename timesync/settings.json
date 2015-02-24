@@ -1,0 +1,8 @@
+{
+  "bg_subtract": {
+    "history": 1000,
+    "var_threshold": 16.0,
+    "dilation": 2,
+    "erosion": 4
+  }
+}
